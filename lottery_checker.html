@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LottoCheck</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input { padding: 10px; width: 80%; max-width: 300px; }
+        button { padding: 10px 20px; margin-top: 10px; }
+        #result, #ad { margin-top: 20px; font-size: 18px; }
+        #ad { color: gray; }
+    </style>
+</head>
+<body>
+    <h1>LottoCheck</h1>
+    <p>Enter your 6 numbers (1-49, separated by spaces):</p>
+    <input type="text" id="userNumbers" placeholder="e.g., 3 15 27 32 41 48">
+    <br>
+    <button onclick="checkNumbers()">Check My Numbers</button>
+    <div id="result">Results will show here</div>
+    <div id="ad">Ad Space</div>
+
+    <script>
+        // Hardcoded winning numbers for now
+        const winningNumbers = [3, 15, 27, 32, 41, 48];
+        const bonusNumber = 7;
+
+        function checkNumbers() {
+            // Get user input and split into array
+            const input = document.getElementById("userNumbers").value.trim();
+            const userNumbers = input.split(" ").map(Number);
+
+            // Basic validation
+            if (userNumbers.length !== 6 || userNumbers.some(n => n < 1 || n > 49 || isNaN(n))) {
+                document.getElementById("result").innerText = "Please enter exactly 6 numbers between 1 and 49.";
+                return;
+            }
+
+            // Count matches
+            const matches = userNumbers.filter(num => winningNumbers.includes(num)).length;
+            const bonusMatch = userNumbers.includes(bonusNumber);
+
+            // Show result
+            let resultText = `You matched ${matches} numbers`;
+            if (matches === 6) resultText = "JACKPOT! All 6 numbers!";
+            else if (matches === 5 && bonusMatch) resultText += " + bonus!";
+            else if (matches < 3) resultText += ". Better luck next time!";
+            document.getElementById("result").innerText = resultText;
+
+            // Show ad
+            document.getElementById("ad").innerText = "Ad: Buy more tickets at LottoMart!";
+        }
+    </script>
+</body>
+</html>
